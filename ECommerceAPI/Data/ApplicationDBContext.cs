@@ -8,7 +8,7 @@ using Microsoft.Identity.Client;
 
 namespace ECommerceAPI.Data;
 
-public class ApplicationDBContext : IdentityDbContext<IdentityUser>
+public class ApplicationDBContext : IdentityDbContext<User, AppRole, Guid>
 {
     public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
     {
