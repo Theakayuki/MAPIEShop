@@ -15,5 +15,6 @@ public class Product
     public int Stock { get; set; }
     [Url]
     public string? ImageUrl { get; set; }
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }
