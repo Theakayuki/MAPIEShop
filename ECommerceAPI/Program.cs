@@ -14,14 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=ECommerceDB.db"));
 
-builder.Services.AddIdentity<User, AppRole>()
+
+builder.Services.AddIdentityApiEndpoints<User>()
+    .AddRoles<AppRole>()
     .AddEntityFrameworkStores<AppDBContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 
 builder.Services.AddValidation();
 
@@ -101,5 +101,7 @@ using (var scope = app.Services.CreateScope())
 }
 
 var scopeRequiredByApi = app.Configuration["AzureAd:Scopes"] ?? "";
+
+app.MapGroup("/auth").WithTags("Auth").MapIdentityApi<User>();
 
 app.Run();
