@@ -7,6 +7,7 @@ using ECommerceAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using ECommerceAPI.Models;
 using Microsoft.AspNetCore.Identity;
+using ECommerceAPI.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,5 +104,10 @@ using (var scope = app.Services.CreateScope())
 var scopeRequiredByApi = app.Configuration["AzureAd:Scopes"] ?? "";
 
 app.MapGroup("/auth").WithTags("Auth").MapIdentityApi<User>();
+
+app.MapProductsEndpoints();
+app.MapCartEndpoints();
+app.MapOrderingEndpoints();
+app.MapStripeWebhook();
 
 app.Run();
